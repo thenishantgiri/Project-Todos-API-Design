@@ -3,7 +3,9 @@ import morgan from 'morgan'
 import cors from 'cors'
 
 export const app = express()
+const router = express.Router()
 
+// to remove the x-powered-by:Express (in the header)
 app.disable('x-powered-by')
 
 app.use(cors())
@@ -11,17 +13,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-const log = (req, res, next) => {
-  console.log('logging')
-  // passing data to the controller from this middleware
-  req.mydata = 'middleware data passing to controller'
-  next()
-}
+router.get('/me', (req, res) => {
+  res.send({ me: 'hello' })
+})
+
+// mounting router with app
+app.use('/api', router)
 
 // CRUD : Create, Read, Update & Destroy
 // Read
-app.get('/data', log, (req, res) => {
-  res.send({ data: req.mydata })
+app.get('/data', (req, res) => {
+  res.send({ data: 'Reading values off the /data path' })
 })
 
 // Create
