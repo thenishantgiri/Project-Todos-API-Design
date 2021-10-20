@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.send({ message: 'hello' })
 })
 
-app.post('/hello', (req, res) => {
+app.post('/', (req, res) => {
   console.log(req.body)
   res.send({ message: 'ok' })
 })
