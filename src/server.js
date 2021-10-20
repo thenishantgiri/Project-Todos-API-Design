@@ -11,8 +11,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.get('/data', (req, res) => {
-  res.send({ message: 'hello' })
+const log = (req, res, next) => {
+  console.log('logging')
+  // passing data to the controller from this middleware
+  req.mydata = 'middleware data passing to controller'
+  next()
+}
+
+app.get('/data', log, (req, res) => {
+  res.send({ data: req.mydata })
 })
 
 app.post('/data', (req, res) => {
