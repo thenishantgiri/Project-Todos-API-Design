@@ -11,13 +11,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.get('/', (req, res) => {
+app.get('/data', (req, res) => {
   res.send({ message: 'hello' })
 })
 
-app.post('/', (req, res) => {
-  console.log(req.body)
-  res.send({ message: 'ok' })
+app.post('/data', (req, res) => {
+  res.send(req.body)
 })
 
 export const start = () => {
@@ -25,4 +24,3 @@ export const start = () => {
     console.log('server listening on port http://localhost:3000')
   })
 }
-
