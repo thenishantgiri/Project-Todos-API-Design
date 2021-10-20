@@ -18,13 +18,22 @@ const log = (req, res, next) => {
   next()
 }
 
+// CRUD : Create, Read, Update & Destroy
+// Read
 app.get('/data', log, (req, res) => {
   res.send({ data: req.mydata })
 })
 
+// Create
 app.post('/data', (req, res) => {
   res.send(req.body)
 })
+
+// Update (fundamentally post & put does the same thing, it's just the convension to use put for updating the value)
+app.put('/data', (req, res) => {})
+
+// Delete
+app.delete('/data', (req, res) => {})
 
 export const start = () => {
   app.listen(3000, () => {
