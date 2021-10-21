@@ -1,44 +1,33 @@
 import express from 'express'
+import { json, urlencoded } from 'body-parser'
 import morgan from 'morgan'
+import config from './config'
 import cors from 'cors'
+import { connect } from './utils/db'
+import userRouter from './resources/user/user.router'
+import itemRouter from './resources/item/item.router'
+import listRouter from './resources/list/list.router'
 
 export const app = express()
-const router = express.Router()
 
-// to remove the x-powered-by:Express (in the header)
 app.disable('x-powered-by')
 
 app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(json())
+app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-router.get('/me', (req, res) => {
-  res.send({ me: 'hello' })
-})
+app.use('/api/user', userRouter)
+app.use('/api/item', itemRouter)
+app.use('/api/list', listRouter)
 
-// mounting router with app
-app.use('/api', router)
-
-// CRUD : Create, Read, Update & Destroy
-// Read
-app.get('/data', (req, res) => {
-  res.send({ data: 'Reading values off the /data path' })
-})
-
-// Create
-app.post('/data', (req, res) => {
-  res.send(req.body)
-})
-
-// Update (fundamentally post & put does the same thing, it's just the convension to use put for updating the value)
-app.put('/data', (req, res) => {})
-
-// Delete
-app.delete('/data', (req, res) => {})
-
-export const start = () => {
-  app.listen(3000, () => {
-    console.log('server listening on port http://localhost:3000')
-  })
+export const start = async () => {
+  try {
+    await connect()
+    app.listen(config.port, () => {
+      console.log(`REST API on http://localhost:${config.port}/api`)
+    })
+  } catch (e) {
+    console.error(e)
+  }
 }
