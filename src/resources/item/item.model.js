@@ -17,14 +17,14 @@ const itemSchema = new mongoose.Schema(
     notes: String,
     due: Date,
     createdBy: {
-      ref: 'user',
       type: mongoose.SchemaTypes.ObjectId,
+      ref: 'user',
       required: true,
     },
     list: {
+      type: mongoose.SchemaTypes.ObjectId,
       ref: 'list',
       required: true,
-      type: mongoose.SchemaTypes.ObjectId,
     },
   },
   { timestamps: true }
